@@ -1,0 +1,15 @@
+- name: Register systems with RH
+  redhat_subscription:
+    auto_attach: yes
+    state: present
+    username: "{{ sm_username }}"
+    password: "{{ sm_password }}"
+    force_register: true
+    pool_ids:
+      - "{{ rhsm_pool_id }}"
+
+- name: Enable SM repos
+  rhsm_repository:
+    name: "{{ item }}"
+    state: enabled
+  with_items: "{{ sm_repos_enabled }}"

@@ -1,0 +1,20 @@
+- name: add GSSAPIAuthentication no
+  lineinfile: 
+    dest: "{{ sshdconfig }}" 
+    regexp: "GSSAPIAuthentication yes" 
+    line: "GSSAPIAuthentication no" 
+    insertafter: "^# GSSAPI options" 
+    state: present
+
+- name: add UseDNS no
+  lineinfile: 
+    dest: "{{ sshdconfig }}" 
+    regexp: "UseDNS yes" 
+    line: "UseDNS no" 
+    insertafter: "^.*ShowPatchLevel" 
+    state: present
+
+- name: restart sshd
+  systemd:
+      name: sshd.service
+      state: restarted

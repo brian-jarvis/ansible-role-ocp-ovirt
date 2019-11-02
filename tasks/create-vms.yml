@@ -1,0 +1,29 @@
+- name: Run VM in ovirt
+  delegate_to: localhost
+  ovirt_vm:
+    # The machine behaves differently starting from ansible vs. the ui.
+    # From ansible the cloud_init does not run.
+    #state: running
+    timeout: 1800
+    name: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}"
+    comment: {{ ovirt_comment }}
+    template: "{{ ovirt_template }}"
+    clone: yes
+    cluster: Default
+    memory: "{{ ovirt_memory }}"
+    memory_max: "{{ ovirt_memory }}"
+    cpu_cores: "{{ ovirt_cpu_cores }}"
+    cpu_sockets: "{{ ovirt_cpu_sockets }}"
+    cpu_threads: 1
+    type: server
+    operating_system: "{{ ovirt_os }}"
+    high_availability: false
+    cloud_init: "{{ ovirt_cloud_int }}"
+    auth:
+      hostname: "{{ ovirt_host_name }}"
+      insecure: yes
+      url: "https://{{ ovirt_host_name }}/ovirt-engine/api"
+      username: "{{ ovirt_host_user }}"
+      password: "{{ ovirt_host_pass }}"
+    wait: true
+

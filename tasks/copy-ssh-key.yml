@@ -1,0 +1,41 @@
+- name: "Get pub key"
+  set_fact:
+      pub_key: "{{ lookup('file', ssh_key_path + '.pub') }}"
+
+- name: "Configure ssh"
+  block:
+    - name: make directory
+      file:
+        path: "/home/{{ ssh_user_name }}/.ssh"
+        state: directory
+
+    - name: create empty file
+      file:
+        path: "/home/{{ ssh_user_name }}/.ssh/authorized_keys"
+        state: touch
+
+    - name: put pubkey
+      lineinfile:
+        path: "/home/{{ ssh_user_name }}/.ssh/authorized_keys"
+        line: "{{ pub_key }}"
+
+  when: "ssh_user_name != 'root'"
+
+- name: "Configure ssh root"
+  block:
+    - name: make directory
+      file:
+        path: "/{{ ssh_user_name }}/.ssh"
+        state: directory
+
+    - name: create empty file
+      file:
+        path: "/{{ ssh_user_name }}/.ssh/authorized_keys"
+        state: touch
+
+    - name: put pubkey
+      lineinfile:
+        path: "/{{ ssh_user_name }}/.ssh/authorized_keys"
+        line: "{{ pub_key }}"
+
+  when: "ssh_user_name == 'root'"
