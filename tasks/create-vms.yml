@@ -6,7 +6,7 @@
     #state: running
     timeout: 1800
     name: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}"
-    comment: {{ ovirt_comment }}
+    comment: "{{ ovirt_comment }}"
     template: "{{ ovirt_template }}"
     clone: yes
     cluster: Default
