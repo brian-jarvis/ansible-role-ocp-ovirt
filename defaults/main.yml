@@ -11,6 +11,20 @@ ovirt_cpu_sockets: 1
 ovirt_os: rhel_7x64
 ovirt_comment: "Created with Ansible"
 
+ovirt_boot_devices:
+  - cdrom
+  - hd
+
+ovirt_cd_iso: ""
+ovirt_storage_name: "boot"
+ovirt_storage_size: "100GiB"
+ovirt_storage_bootable: true
+ovirt_kernel_params: ""
+ovirt_kernel_path: ""
+
+ovirt_nic_network: ""
+ovirt_nic_profile: ""
+
 ssh_user_name: "root"
 
 sm_repos_enabled:
