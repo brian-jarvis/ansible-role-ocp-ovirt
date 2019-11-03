@@ -23,7 +23,6 @@
     cd_iso: "{{ ovirt_cd_iso }}"
     kernel_path: "{{ ovirt_kernel_path }}"
     kernel_params: "{{ ovirt_kernel_params }}"
-    kernel_params_persist: "yes"
     auth:
       hostname: "{{ ovirt_host_name }}"
       insecure: yes
