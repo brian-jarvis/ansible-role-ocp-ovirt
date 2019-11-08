@@ -1,0 +1,13 @@
+- name: Set VM State
+  delegate_to: localhost
+  ovirt_vm:
+    state: "{{ ovirt_vm_state }}"
+    timeout: 1800
+    name: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}"
+    auth:
+      hostname: "{{ ovirt_host_name }}"
+      insecure: yes
+      url: "https://{{ ovirt_host_name }}/ovirt-engine/api"
+      username: "{{ ovirt_host_user }}"
+      password: "{{ ovirt_host_pass }}"
+    wait: true

@@ -1,4 +1,4 @@
-- name: Run VM in ovirt
+- name: Create VM
   delegate_to: localhost
   ovirt_vm:
     # The machine behaves differently starting from ansible vs. the ui.
@@ -19,11 +19,7 @@
     type: server
     operating_system: "{{ ovirt_os }}"
     high_availability: false
-    cloud_init: "{{ ovirt_cloud_int }}"
     boot_devices: "{{ ovirt_boot_devices }}"
-    cd_iso: "{{ ovirt_cd_iso }}"
-    kernel_path: "{{ ovirt_kernel_path }}"
-    kernel_params: "{{ ovirt_kernel_params }}"
     auth:
       hostname: "{{ ovirt_host_name }}"
       insecure: yes
@@ -32,3 +28,26 @@
       password: "{{ ovirt_host_pass }}"
     wait: true
 
+- name: sleep for 300 seconds and continue with play
+  wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+- name: "Attach ISO image to cdrom"
+  delegate_to: localhost
+  ovirt_vm:
+    # The machine behaves differently starting from ansible vs. the ui.
+    # From ansible the cloud_init does not run.
+    #state: running
+    timeout: 1800
+    name: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}"
+    comment: "{{ ovirt_comment }}"
+    cd_iso: "{{ ovirt_cd_iso }}"
+    auth:
+      hostname: "{{ ovirt_host_name }}"
+      insecure: yes
+      url: "https://{{ ovirt_host_name }}/ovirt-engine/api"
+      username: "{{ ovirt_host_user }}"
+      password: "{{ ovirt_host_pass }}"
+    wait: true
+  when: ovirt_cd_iso != ""

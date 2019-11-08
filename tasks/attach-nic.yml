@@ -1,0 +1,15 @@
+- name: Add disk for var storage
+  delegate_to: localhost
+  ovirt_nic:
+    name: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}.nic"
+    vm: "{{ inventory_hostname_short }}{{ ovirt_hostname_suffix | default('.' + ovirt_user_identifier) }}"
+    state: present
+    interface: "virtio"
+    network: "{{ ovirt_nic_network }}"
+    profile: "{{ ovirt_nic_profile }}"
+    auth:
+      hostname: "{{ ovirt_host_name }}"
+      insecure: yes
+      url: "https://{{ ovirt_host_name }}/ovirt-engine/api"
+      username: "{{ ovirt_host_user }}"
+      password: "{{ ovirt_host_pass }}"
